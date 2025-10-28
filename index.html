@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ViturAI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="images/ViturAI.png">
+    <link rel="apple-touch-icon" href="images/ViturAI.png">
+    <link rel="shortcut icon" href="images/ViturAI.png" type="image/x-icon">
+</head>
+<body>
+    <header class="clear-scroll">
+        <p class="logo">ViturAI</p>
+        <nav>
+            <ul class="nav-bar">
+                <li><a href="#Home">Home</a></li>
+                <li><a href="#Vision">Vision</a></li>
+                <li><a href="#Process">Process</a></li>
+                <li><a href="#Resources">Resources</a></li>
+                <li><a href="#Download">Download</a></li>
+            </ul>
+        </nav>
+        <a class="contact-us-button" href="#Contact-us">Contact Us</a>
+    </header>
+    <main class="Pages">
+        <div class="Home" id="Home">
+            <div class="content-1">
+                <img class="Robot-logo" src="images/Robot.png">
+                <h1 class="main-logo">ViturAI
+                    <p class="slogan">Train with Care, Judge with Fair.</p>
+                </h1>
+            </div>
+        </div>
+        <div class="Vision" id="Vision">
+            <div class="content-2">
+                <h1 class="vision-text animation">VISION</h1>
+                <div class="content-2-1 animation">
+                    <p>
+                        We aim to develop an artificial intelligence system capable of evaluating, monitoring, and critically assessing the ethical dimensions of AI technologies to ensure alignment between technological advancement and human values (ethical alignment). In an era where AI increasingly participates in social decision-making, establishing a
+                        <span style="color: rgb(72, 157, 255);">human-centered AI framework</span> 
+                         becomes a prerequisite for safeguarding individual dignity, freedom, and rights.
+                    </p>
+                </div>
+                <div class="content-2-2 animation">
+                    <p>
+                        We believe that  
+                        <span style="color: rgb(72, 157, 255);">ethics and humanity must remain at the core of technological innovation.</span>
+                        By integrating interdisciplinary knowledge from data science, philosophy, and public policy, our system aspires to build an AI evaluation standard that promotes
+                        <span style="color: rgb(72, 157, 255);">responsible innovation,</span>
+                        thereby shaping a future in which AI serves knowledge, justice, and the advancement of humankind.
+                    </p>
+                </div> 
+                <div class="content-2-3 animation">
+                    <p>From this direction, we developed
+                        <span style="color: rgb(72, 157, 255);">AI Ethics Evaluator Pro</span>
+                        which is a Chrome extension designed to assist users in objectively assessing the ethical integrity, fairness, and neutrality of AI-generated content.
+                    </p>
+                    <p>The system employs a set of evaluative criteria inspired by modern 
+                        <span style="color: rgb(72, 157, 255);">modern AI ethics frameworks</span>, allowing it to analyze tone, bias, and moral alignment across selected content with consistency and rigor.
+                        Beyond technical evaluation, the tool aims to raise awareness of ethical considerations in everyday interactions with <span style="color: rgb(72, 157, 255);">AI-powered platforms.</span>
+                        By helping users detect potential bias, distortion, or ethical violations, <span style="color: rgb(72, 157, 255);">AI Ethics Evaluator Pro</span> contributes to the broader discourse on transparency, accountability, and responsible innovation in artificial intelligence.
+                    </p>
+                </div>  
+            </div>
+        </div>
+        <div class="Process" id="Process">
+            <div class="content-3">
+                <h1 class="Process-text animation">PROCESS</h1>
+                <div class="process1 animation">
+                    <div class="box1">
+                        <img class="c1 animation" src="images/1.png">
+                        <h2 class="heading1 animation">Model Initialization and Configuration</h2>
+                    </div>
+                    <p class="process-content-text1 animation">The process begins by loading the “Meta-Llama-3.1-8B” model with 4-bit quantization to optimize memory usage. LoRA (Low-Rank Adaptation) is applied to fine-tune specific layers efficiently, using parameters like rank=16 and dropout=0.05. A custom “CustomLoRAModel” wraps the base model, adding a score prediction head with linear layers, dropout, and sigmoid activation to output ethical scores (0-1 range) for five criteria: Transparency, Fairness, Privacy, Responsibility, and Community Benefit. The tokenizer is configured to handle input text, ensuring compatibility with the model’s requirements for ethical scenario evaluation.</p>
+                </div>
+                <div class="process2 animation">
+                    <div class="box2">
+                        <img class="c2" src="images/2.png">
+                        <h2 class="heading2">Model Initialization and Configuration</h2>
+                    </div>
+                    <p class="process-content-text2 animation">Data is sourced from a JSONL file containing ethical scenarios, responses, and five ethical scores. Each entry is validated for completeness, and scores are normalized (0-20 to 0-1) for training stability. Scenarios are formatted using an “ETHICS_PROMPT” template, instructing the model to act as an ethics evaluator. A Hugging Face “Dataset” is created, with a custom “CustomDataCollator” to tokenize inputs, pad sequences, and include normalized scores. The code supports a TEST_MODE (limited samples) or FULL_MODE (all data), ensuring flexibility for quick testing or comprehensive training.</p>
+                </div>   
+                <div class="process3 animation">
+                    <div class="box3">
+                        <img class="c3" src="images/3.png">
+                        <h2 class="heading3">Model Training Process</h2>
+                    </div>
+                    <p class="process-content-text3 animation">The model is trained using the “SFTTrainer” from Hugging Face, combining language generation and score prediction. Training settings include a low learning rate (2e-5), cosine scheduler, and 8-bit AdamW optimizer, with 1 epoch for testing or 3 for full training. The “CustomLoRAModel”’s forward pass extracts the last hidden state, predicts scores via the score head, and computes Mean Squared Error (MSE) loss against true scores. The trainer manages data batches, optimizing both the language model and score head to align predictions with ethical evaluations and generate coherent responses.</p>
+                </div>   
+                <div class="process4 animation">
+                    <div class="box4">
+                        <img class="c4" src="images/4.png">
+                        <h2 class="heading4">Inference and Result Generation</h2>
+                    </div>
+                    <p class="process-content-text4 animation">For inference, the “predict_ethics” function formats new scenarios using the “ETHICS_PROMPT”, tokenizes them, and passes them through the model. The score head outputs ethical scores (scaled back to 0-20), and the base model generates a textual response. Scores are summed to calculate a total (0-100) and determine an ethics level (Bad, Moderate, Good, Very Good). The output is a structured dictionary with the prompt, answer, scores, total, and ethics level. A test case demonstrates the model’s ability to evaluate scenarios, ensuring practical application for ethical analysis.</p>
+                </div>
+            </div>
+        </div>
+        <div class="Resources" id="Resources">
+            <div class="content-4">
+                <h1 class="Resources-text animation">RESOURCES</h1>
+                <div class="links-box animation">
+                    <p class="links">
+                        Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G., ... & Chintala, S. (2019). 
+                        PyTorch: An imperative style, high-performance deep learning library. 
+                        In H. Wallach, H. Larochelle, A. Beygelzimer, F. d'Alché-Buc, E. Fox, & R. Garnett (Eds.), 
+                        Advances in Neural Information Processing Systems (Vol. 32). Curran Associates, Inc. 
+                        <a href="https://pytorch.org/" target="_blank">https://pytorch.org/</a>
+                    </p>
+    
+                    <p class="links">
+                        Wolf, T., Debut, L., Sanh, V., Chaumond, J., Delangue, C., Moi, A., ... & Rush, A. M. (2020). 
+                        Transformers: State-of-the-Art Natural Language Processing. 
+                        In Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations (pp. 38–45). 
+                        Association for Computational Linguistics. 
+                        <a href="https://doi.org/10.18653/v1/2020.emnlp-demos.6" target="_blank">https://doi.org/10.18653/v1/2020.emnlp-demos.6</a>
+                    </p>
+    
+                    <p class="links">
+                        Hugging Face. (2025). Hugging Face Hub Documentation. Hugging Face. 
+                        <a href="https://huggingface.co/docs" target="_blank">https://huggingface.co/docs</a>
+                    </p>
+    
+                    <p class="links">
+                        Hugging Face. (2025). TRL: Transformer Reinforcement Learning Library (Version 0.23.0) [Computer software]. 
+                        Hugging Face. 
+                        <a href="https://github.com/huggingface/trl" target="_blank">https://github.com/huggingface/trl</a>
+                    </p>
+    
+                    <p class="links">
+                        Lhoest, Q., Villanova del Moral, A., Jernite, Y., Thakur, A., von Platen, P., Patil, S., ... & Wolf, T. (2021). 
+                        Datasets: A community library for natural language processing. 
+                        In Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing: System Demonstrations (pp. 175–184). 
+                        Association for Computational Linguistics. 
+                        <a href="https://doi.org/10.18653/v1/2021.emnlp-demo.21" target="_blank">https://doi.org/10.18653/v1/2021.emnlp-demo.21</a>
+                    </p>
+    
+                    <p class="links">
+                        Hu, E. J., Shen, Y., Wallis, P., Allen-Zhu, Z., Li, Y., Wang, L., ... & Chen, W. (2022). 
+                        LoRA: Low-Rank Adaptation of Large Language Models. 
+                        arXiv preprint arXiv:2106.09685. 
+                        <a href="https://arxiv.org/abs/2106.09685" target="_blank">https://arxiv.org/abs/2106.09685</a>
+                    </p>
+    
+                    <p class="links">
+                        Unsloth AI. (2025). Unsloth: Fast and memory-efficient fine-tuning for large language models (Version 2025.10.7) [Computer software]. 
+                        GitHub. 
+                        <a href="https://github.com/unslothai/unsloth" target="_blank">https://github.com/unslothai/unsloth</a>
+                    </p>
+    
+                    <p class="links">
+                        Unsloth AI. (2025). Unsloth Zoo: Pretrained templates for Unsloth models (Version 2025.10.8) [Computer software]. 
+                        PyPI. 
+                        <a href="https://pypi.org/project/unsloth-zoo/" target="_blank">https://pypi.org/project/unsloth-zoo/</a>
+                    </p>
+    
+                    <p class="links">
+                        YouTube. (n.d.). How to Create Your Chrome Extension Using AI [Video]. YouTube. 
+                        <a href="https://youtu.be/W-7h6XHXecA?si=vpTZGi9uh1Q3Ep_d" target="_blank">https://youtu.be/W-7h6XHXecA</a>
+                    </p>
+    
+                    <p class="links">
+                        YouTube. (n.d.). Finetune Large Language Model để trả lời ngon hơn, nuột hơn cùng Unsloth - Mì AI [Video]. YouTube. 
+                        <a href="https://youtu.be/b8XJrNACyUA?si=sK0gdtXMnc6CTSpR" target="_blank">https://youtu.be/b8XJrNACyUA</a>
+                    </p>
+    
+                    <p class="links">
+                        YouTube. (n.d.). EASIEST Way to Fine-Tune a LLM and Use It With Ollama [Video]. YouTube. 
+                        <a href="https://youtu.be/pTaSDVz0gok?si=tnza_P6xK0m9Uo1T" target="_blank">https://youtu.be/pTaSDVz0gok</a>
+                    </p>
+    
+                    <p class="links">
+                        YouTube. (n.d.). [BK-IMP] Xu hướng AI: Các vấn đề đạo đức và cách sử dụng AI hiệu quả trong học tập [Video]. YouTube. 
+                        <a href="https://youtu.be/L1YfsWH2frY?si=gWeghdqAW9rWRgjj" target="_blank">https://youtu.be/L1YfsWH2frY</a>
+                    </p>
+    
+                    <p class="links">
+                        YouTube. (n.d.). CSS Tutorial for Beginners [Video]. YouTube. 
+                        <a href="https://youtu.be/j6nOnIT-T1o?si=sWqx05T60zhC6xLg" target="_blank">https://youtu.be/j6nOnIT-T1o</a>
+                    </p>
+    
+                    <p class="links">
+                        YouTube. (n.d.). Animate On Scroll With Just 3 LINES Of CSS (No Libraries) [Video]. YouTube. 
+                        <a href="https://www.youtube.com/watch?v=0TnO1GzKWPc" target="_blank">https://www.youtube.com/watch?v=0TnO1GzKWPc</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="Download" id="Download">    
+            <div class="content-5">
+                <h1 class="Download-text animation">DOWNLOAD</h1>
+                <div class="Downloadbox">
+                    <h2 class="Download-textbox">Click here to Download Extension!</h2>
+                    <button class="Downloadbutton">
+                        <a class="button-content" href="">Download!</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="Contact-us" id="Contact-us">
+            <div class="overlay"></div>
+            <div class="content-6">
+                <h1 class="Contact-us-text animation">CONTACT US</h1>
+                <div class="imagerow1">
+                    <div class="image1box pop1">
+                        <img class="image1 pfp animation" src="images/Thanh Lam.jpg">
+                        <div class="pop-up-1">
+                            <h3 class="ThanhLam">Lê Thị Thanh Lam</h3>
+                            <div class="pop-up-1-content">
+                                <p>Birthday: 28/06/2008</p>
+                                <p>Education: A3K12, Can Tho University Elite highschool</p>
+                                <p>Hobby: Sports</p>
+                                <p>Email: thanhlamm06@gmail.com</p>
+                                <p>Contact number: (+84) 772119878</p>
+                                <p>What inspires me to join: I joined the AI contest because I’m passionate about learning how AI works and how it can be used responsibly. I want to explore the connection between technology and ethics. My goal is to create something meaningful that promotes fairness and transparency in AI. I believe ethical AI is key to building a better future for everyone.</p>
+                            </div>
+                        </div>                   
+                    </div>
+                    <div class="image2box pop2">
+                        <img class="image2 pfp animation" src="images/Hải Sơn.jpg">
+                        <div class="pop-up-2">
+                            <h3 class="HaiSon">Trần Hữu Hải Sơn </h3>
+                            <div class="pop-up-2-content">
+                                <p>Birthday: 03/10/2008</p>
+                                <p>Education: A3K12, Can Tho University Elite highschool</p>
+                                <p>Hobbies: Badminton, Mathematic, Physic</p>
+                                <p>Email: thhson556@gmail.com</p>
+                                <p>Contact number: (+84) 792053747</p>
+                                <p>What inspires me to join: In an era of rapidly advancing AI, the misuse of AI has become increasingly widespread. I have seen some models experience “AI depression”, which raised concerns about the correctness and ethicality of AI-generated responses. While exploring an AI ethics forum, I realized the need for a clear approach to address this challenge. From there, I assembled a team, set a concrete goal, and took the first steps in developing an ethical evaluation model for AI, which we named VirturAI. We hope this model will contribute to greater responsibility and safety in AI applications. </p>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="image3box pop3">                
+                        <img class="image3 pfp animation" src="images/Phúc Bảo.png">
+                        <div class="pop-up-3">
+                            <h3 class="PhucBao">Nguyễn Phúc Bảo</h3>
+                            <div class="pop-up-3-content">
+                                <p>Birthday: 16/03/2008</p>
+                                <p>Education: A3K12, Can Tho University Elite highschool</p>
+                                <p>Hobbies: Video Games, Listen to Music</p>
+                                <p>Email: npbaro1603@gmail.com</p>
+                                <p>Contact number: (+84) 853737332</p>
+                                <p>What inspires me to join: Coding sounded fun to me when i first heard of it. </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="imagerow2">
+                    <div class="image4box pop4">
+                        <img class="image4 pfp animation" src="images/Gia Hưng.jpg">
+                        <div class="pop-up-4">
+                            <h3 class="GiaHung">Tô Ngọc Gia Hưng</h3>
+                            <div class="pop-up-4-content">
+                                <p>Birthday: 24/10/2008</p>
+                                <p>Education: A3K12, Can Tho University Elite highschool</p>
+                                <p>Hobbies: Video Games, Sleeping</p>
+                                <p>Email: rinyt73@gmail.com</p>
+                                <p>Contact number: (+84) 949849809</p>
+                                <p>What inspires me to join: The value of the certification.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image5box pop5">
+                        <img class="image5 pfp animation" src="images/Duy Anh.jpg">
+                        <div class="pop-up-5">
+                            <h3 class="DuyAnh">Phạm Duy Anh</h3>
+                            <div class="pop-up-5-content">
+                                <p>Birthday: 18/09/2008</p>
+                                <p>Education: A3K12, Can Tho University Elite highschool</p>
+                                <p>Hobby: Sleeping</p>
+                                <p>Email: phamduyanh1809.hgi@gmail.com</p>
+                                <p>Contact number: (+84) 907407609</p>
+                                <p>What inspires me to join: My goal is to help build a humane community — one where technology is used responsibly, respects humanity, and strengthens the connection between knowledge, ethics, and action. I believe the future can only be truly progressive if it remains deeply human. </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image6box pop6">
+                        <img class="image6 pfp animation" src="images/Thầy Khánh.jpg">
+                        <div class="pop-up-6">
+                            <h3 class="ThayKhanh">Mr.Phạm Minh Khánh</h3>
+                            <div class="pop-up-6-content">
+                                <p>Email: pmkhanh@ctu.edu.vn</p>
+                                <p>Contact number: (+84) 977533276</p>
+                                <p>Role: Supervising teacher for the project</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<script src="script.js"></script>
+</body>
+</html>
