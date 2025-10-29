@@ -72,7 +72,7 @@
                         <img class="c1 animation" src="images/1.png">
                         <h2 class="heading1 animation">Model Initialization and Configuration</h2>
                     </div>
-                    <p class="process-content-text1 animation">The process begins by loading the “Meta-Llama-3.1-8B” model with 4-bit quantization to optimize memory usage. LoRA (Low-Rank Adaptation) is applied to fine-tune specific layers efficiently, using parameters like rank=16 and dropout=0.05. A custom “CustomLoRAModel” wraps the base model, adding a score prediction head with linear layers, dropout, and sigmoid activation to output ethical scores (0-1 range) for five criteria: Transparency, Fairness, Privacy, Responsibility, and Community Benefit. The tokenizer is configured to handle input text, ensuring compatibility with the model’s requirements for ethical scenario evaluation.</p>
+                    <p class="process-content-text1 animation">The process begins by loading the “Meta-Llama-3.1-8B” model LoRA (Low-Rank Adaptation) is applied to fine-tune specific layers efficiently, using parameters like rank=16 and dropout=0.05. A custom “ImprovedCustomLoRAModel” wraps the base model, adding a score prediction head with linear layers, dropout, and sigmoid activation to output ethical scores (0-1 range) for five criteria: Transparency, Fairness, Privacy, Responsibility, and Community Benefit. The tokenizer is configured to handle input text, ensuring compatibility with the model’s requirements for ethical scenario evaluation.</p>
                 </div>
                 <div class="process2 animation">
                     <div class="box2">
@@ -86,14 +86,14 @@
                         <img class="c3" src="images/3.png">
                         <h2 class="heading3">Model Training Process</h2>
                     </div>
-                    <p class="process-content-text3 animation">The model is trained using the “SFTTrainer” from Hugging Face, combining language generation and score prediction. Training settings include a low learning rate (2e-5), cosine scheduler, and 8-bit AdamW optimizer, with 1 epoch for testing or 3 for full training. The “CustomLoRAModel”’s forward pass extracts the last hidden state, predicts scores via the score head, and computes Mean Squared Error (MSE) loss against true scores. The trainer manages data batches, optimizing both the language model and score head to align predictions with ethical evaluations and generate coherent responses.</p>
+                    <p class="process-content-text3 animation">The model is trained using the “SFTTrainer” from Hugging Face, combining language generation and score prediction. Training settings include a low learning rate (2e-5), cosine scheduler, and 8-bit AdamW optimizer, with 1 epoch for testing or 3 for full training. The “ImprovedCustomLoRAModel”’s forward pass extracts the last hidden state, predicts scores via the score head. The trainer manages data batches, optimizing both the language model and score head to align predictions with ethical evaluations and generate coherent responses.</p>
                 </div>   
                 <div class="process4 animation">
                     <div class="box4">
                         <img class="c4" src="images/4.png">
                         <h2 class="heading4">Inference and Result Generation</h2>
                     </div>
-                    <p class="process-content-text4 animation">For inference, the “predict_ethics” function formats new scenarios using the “ETHICS_PROMPT”, tokenizes them, and passes them through the model. The score head outputs ethical scores (scaled back to 0-20), and the base model generates a textual response. Scores are summed to calculate a total (0-100) and determine an ethics level (Bad, Moderate, Good, Very Good). The output is a structured dictionary with the prompt, answer, scores, total, and ethics level. A test case demonstrates the model’s ability to evaluate scenarios, ensuring practical application for ethical analysis.</p>
+                    <p class="process-content-text4 animation">For inference, the “Evaluate_answer” function formats new scenarios using the “ETHICS_PROMPT”, tokenizes them, and passes them through the model. The score head outputs ethical scores (scaled back to 0-20), and the base model generates a textual response. Scores are summed to calculate a total (0-100) and determine an ethics level (Bad, Moderate, Good). The output is a structured dictionary with the prompt, answer, scores, total, and ethics level. A test case demonstrates the model’s ability to evaluate scenarios, ensuring practical application for ethical analysis.</p>
                 </div>
             </div>
         </div>
@@ -295,4 +295,5 @@
 </body>
 
 </html>
+
 
