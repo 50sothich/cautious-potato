@@ -1,0 +1,22 @@
+#All requirements are integrated in the source code to automatically install when running the code.
+#Libraries & dependencies
+torch==2.8.0+cu126
+torchaudio==2.8.0+cu126
+torchvision==0.23.0+cu126
+trl==0.23.0
+peft==0.17.1
+unsloth==2025.10.7
+unsloth_zoo==2025.10.8
+accelerate==1.11.0
+xformers==0.0.32.post2
+triton==3.4.0
+cut_cross_entropy==25.1.1
+bitsandbytes==0.48.1
+datasets==3.4.1
+sentencepiece==0.2.1
+hf_transfer==0.1.9
+huggingface_hub==0.36.0
+transformers==4.56.2
+protobuf==3.20.3
+pyarrow==14.0.0
+gradio==5.49.1
