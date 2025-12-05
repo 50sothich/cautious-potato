@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ViturAI Ethics Judge</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      width: 380px;
+      padding: 10px;
+    }
+    textarea, input {
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 8px;
+      padding: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    #result {
+      white-space: pre-wrap;
+      font-size: 13px;
+      border: 1px solid #ddd;
+      padding: 6px;
+      border-radius: 4px;
+      min-height: 40px;
+    }
+  </style>
+</head>
+<body>
+  <h3>ViturAI Ethics Judge</h3>
+
+  <label>Tunnel URL (ngrok / cloudflare):</label>
+  <input id="tunnelUrl" type="text" placeholder="https://xxxx.ngrok-free.app" />
+
+  <button id="saveUrlBtn">💾 Save Tunnel URL</button>
+
+  <label>Question / Scenario:</label>
+  <textarea id="question" rows="3"></textarea>
+
+  <label>AI Answer:</label>
+  <textarea id="answer" rows="3"></textarea>
+
+  <button id="evaluateBtn">🚀 Evaluate Ethics</button>
+
+  <div id="result">Result will appear here...</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
